@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/contactsFragment">
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.example.contactsapp.view.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts">
+        <action
+            android:id="@+id/action_contactsFragment_to_detailContactFragment"
+            app:destination="@id/detailContactFragment"
+        />
+        <argument
+            android:name="clickedContact"
+            app:argType="com.example.contactsapp.model.Contact" />
+        <action
+            android:id="@+id/action_contactsFragment_to_createEditContactFragment"
+            app:destination="@id/createEditContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailContactFragment"
+        android:name="com.example.contactsapp.view.DetailContactFragment"
+        android:label="fragment_detail_contact"
+        tools:layout="@layout/fragment_detail_contact">
+        <action
+            android:id="@+id/action_detail_to_create"
+            app:destination="@id/createEditContactFragment" />
+        <argument
+            android:name="selectedContact"
+            app:argType="com.example.contactsapp.model.Contact" />
+        <action
+            android:id="@+id/action_detailContactFragment_to_createEditContactFragment"
+            app:destination="@id/createEditContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createEditContactFragment"
+        android:name="com.example.contactsapp.view.CreateEditContactFragment"
+        android:label="fragment_create_edit_contact"
+        tools:layout="@layout/fragment_create_edit_contact" >
+        <argument
+            android:name="selectedContact"
+            app:argType="com.example.contactsapp.model.Contact"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_createEditContactFragment_to_detailContactFragment"
+            app:destination="@id/detailContactFragment" />
+    </fragment>
+</navigation>
