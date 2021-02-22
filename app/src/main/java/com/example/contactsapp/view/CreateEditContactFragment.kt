@@ -75,15 +75,8 @@ class CreateEditContactFragment : Fragment() {
             } else {
                 viewModel.saveContact(contact)
             }
-            navOptions {
-                this.popUpTo
-            }
-//            findNavController().popBackStack(R.id.detailContactFragment, true)
-            fragmentManager
-//            val action = CreateEditContactFragmentDirections.actionCreateEditContactFragmentToDetailContactFragment(contact)
-//            findNavController().popBackStack()
-//            findNavController().navigate(action)
-//            findNavController().
+            val action = CreateEditContactFragmentDirections.actionEditToContact(contact)
+            findNavController().navigate(action)
         }
     }
     fun listToString(list: List<String>) : String {
