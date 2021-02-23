@@ -24,12 +24,16 @@ import com.example.contactsapp.model.Contact
 import com.example.contactsapp.model.Header
 import com.example.contactsapp.util.ViewType
 import com.example.contactsapp.viewmodel.ContactsFragmentViewModel
+import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlin.math.log
 
 
 class ContactsFragment : Fragment() {
     private lateinit var binding: FragmentContactsBinding
     private val viewModel by viewModels<ContactsFragmentViewModel>()
+    private val NO_FILTER = 0
+    private val FIRST_NAME_FILTER = 1
+    private val LAST_NAME_FILTER = 2
 //    private val arguments by navArgs<>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +51,7 @@ class ContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        binding.rgFilter.check(binding.rbAll.id)  // doing this in xml now
         binding.btnCreateContact.setOnClickListener {
             val action = ContactsFragmentDirections.actionContactsFragmentToCreateEditContactFragment(null)
             findNavController().navigate(action)
@@ -60,12 +65,41 @@ class ContactsFragment : Fragment() {
         viewModel.getContacts()
 //        viewModel.contacts.observe(this.viewLifecycleOwner, Observer {
 //            binding.rvContacts.layoutManager = LinearLayoutManager(this.context)
-//            binding.rvContacts.adapter = it?.let { contacts -> ContactAdapter(contacts, listener) }
+//            binding.rvContacts.adapter = it?.let { contacts -> MyAdapter(convertContactsIntoViewType(contacts), listener) }
 //        })
+        var field = NO_FILTER
+        var filter = binding.etField.text.toString()
+        binding.btnFilter.setOnClickListener {
+            val selectedOption: Int = binding.rgFilter.checkedRadioButtonId
+            field = when(selectedOption) {
+                binding.rbFirstName.id -> FIRST_NAME_FILTER
+                binding.rbLastName.id -> LAST_NAME_FILTER
+                else -> NO_FILTER
+            }
+            filter = binding.etField.text.toString()
+            if(viewModel.contacts.value != null) {
+                binding.rvContacts.adapter = it?.let {
+                    MyAdapter(convertContactsIntoViewType(
+                            filterBy(field, filter, viewModel.contacts.value!!) ), listener) }// check to make sure not null before calling
+            }
+        }
         viewModel.contacts.observe(this.viewLifecycleOwner, Observer {
             binding.rvContacts.layoutManager = LinearLayoutManager(this.context)
-            binding.rvContacts.adapter = it?.let { contacts -> MyAdapter(convertContactsIntoViewType(contacts), listener) }
+            binding.rvContacts.adapter = it?.let { contacts ->
+                MyAdapter(convertContactsIntoViewType(
+                    filterBy(field, filter, contacts)), listener) }
         })
+    }
+    private fun filterBy(field: Int, filter: String, contacts: List<Contact>) : List<Contact> {
+        return when(field) {
+            FIRST_NAME_FILTER -> contacts.filter {
+                it.fName.contains(filter)
+            }
+            LAST_NAME_FILTER -> contacts.filter {
+                it.lName.contains(filter)
+            }
+            else -> contacts
+        }
     }
     private fun convertContactsIntoViewType(contacts: List<Contact>) : List<ViewType> {
         val viewTypeList = mutableListOf<ViewType>()
