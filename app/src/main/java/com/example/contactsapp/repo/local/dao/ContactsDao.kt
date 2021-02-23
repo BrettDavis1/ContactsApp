@@ -3,6 +3,7 @@ package com.example.contactsapp.repo.local.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.contactsapp.model.Contact
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContactsDao {
@@ -15,6 +16,9 @@ interface ContactsDao {
 
     @Query("SELECT * FROM contacts ORDER BY fName ASC")
     suspend fun getAllContacts(): List<Contact>
+
+//    @Query("SELECT * FROM contacts ORDER BY fName ASC")
+//    suspend fun getAllContactsFlow(): Flow<List<Contact>>
 
     @get:Query("SELECT * FROM contacts ORDER BY fName ASC")
     val contacts: LiveData<List<Contact>>

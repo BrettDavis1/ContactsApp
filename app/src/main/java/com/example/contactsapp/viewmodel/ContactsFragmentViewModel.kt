@@ -6,6 +6,11 @@ import androidx.lifecycle.*
 import com.example.contactsapp.model.Contact
 import com.example.contactsapp.repo.ContactsRepo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class ContactsFragmentViewModel(application: Application) : AndroidViewModel(application) {
@@ -13,10 +18,11 @@ class ContactsFragmentViewModel(application: Application) : AndroidViewModel(app
 
     val contacts: MutableLiveData<List<Contact>?> get() = _contacts
 
-    fun getContacts(context: Context) {
+    fun getContacts() {
         viewModelScope.launch(Dispatchers.IO) {
             val allContacts = ContactsRepo.getContacts(getApplication())
             _contacts.postValue(allContacts)
         }
     }
+
 }
