@@ -93,10 +93,10 @@ class ContactsFragment : Fragment() {
     private fun filterBy(field: Int, filter: String, contacts: List<Contact>) : List<Contact> {
         return when(field) {
             FIRST_NAME_FILTER -> contacts.filter {
-                it.fName.contains(filter)
+                it.fName.contains(filter, true)
             }
             LAST_NAME_FILTER -> contacts.filter {
-                it.lName.contains(filter)
+                it.lName.contains(filter, true)
             }
             else -> contacts
         }
