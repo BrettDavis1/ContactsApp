@@ -18,7 +18,7 @@ abstract class ContactsDatabase : RoomDatabase() {
         private var INSTANCE : ContactsDatabase? = null
         private const val DB_NAME = "contacts.db"
 
-        fun getDatabase(context: Context): ContactsDatabase? {
+        fun getDatabase(context: Context): ContactsDatabase {
             if(INSTANCE == null) {
                 synchronized(ContactsDatabase::class.java) {
                     if(INSTANCE == null) {
@@ -28,7 +28,7 @@ abstract class ContactsDatabase : RoomDatabase() {
                     }
                 }
             }
-            return INSTANCE
+            return INSTANCE!!
         }
     }
 }

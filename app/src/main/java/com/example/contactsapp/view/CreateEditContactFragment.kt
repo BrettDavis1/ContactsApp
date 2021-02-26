@@ -57,8 +57,12 @@ class CreateEditContactFragment : Fragment() {
             // get listFields
             val emails = binding.etEmails.text.toString()
             val phoneNumbers = binding.etPhoneNumbers.text.toString()
-            val emailList: List<String> = emails.split(",").map { emails.trim() }
-            val phoneNumberList: List<String> = phoneNumbers.split(",").map { phoneNumbers.trim() }
+            Log.i(TAG, "onViewCreated: $phoneNumbers")
+            Log.i(TAG, "onViewCreated: $emails")
+            val emailList: List<String> = emails.split(",")
+            val phoneNumberList: List<String> = phoneNumbers.split(",")
+            Log.i(TAG, "onViewCreated: $emailList")
+            Log.i(TAG, "onViewCreated: $phoneNumberList")
 //            val stringList: List<String> = phoneNumbers.split(",").map { phoneNumbers.trim() }
 //            val phoneNumberList = convertToLong(stringList)
             val firstName: String = binding.etFirstName.text.toString()

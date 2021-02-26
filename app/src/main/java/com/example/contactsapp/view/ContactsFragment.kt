@@ -62,14 +62,16 @@ class ContactsFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
-        viewModel.getContacts()
+        //viewModel.getContacts()
+        /* old way of doing adapter
 //        viewModel.contacts.observe(this.viewLifecycleOwner, Observer {
 //            binding.rvContacts.layoutManager = LinearLayoutManager(this.context)
 //            binding.rvContacts.adapter = it?.let { contacts -> MyAdapter(convertContactsIntoViewType(contacts), listener) }
-//        })
+//        })*/
         var field = NO_FILTER
         var filter = binding.etField.text.toString()
         binding.btnFilter.setOnClickListener {
+//            context?.let { context -> viewModel.addRandomContact(context) } //used this to text Flow and make sure it is working
             val selectedOption: Int = binding.rgFilter.checkedRadioButtonId
             field = when(selectedOption) {
                 binding.rbFirstName.id -> FIRST_NAME_FILTER
@@ -77,13 +79,20 @@ class ContactsFragment : Fragment() {
                 else -> NO_FILTER
             }
             filter = binding.etField.text.toString()
-            if(viewModel.contacts.value != null) {
+            if(viewModel.contactsFlow.value != null) {
                 binding.rvContacts.adapter = it?.let {
                     MyAdapter(convertContactsIntoViewType(
-                            filterBy(field, filter, viewModel.contacts.value!!) ), listener) }// check to make sure not null before calling
+                            filterBy(field, filter, viewModel.contactsFlow.value!!) ), listener) }// check to make sure not null before calling
             }
         }
-        viewModel.contacts.observe(this.viewLifecycleOwner, Observer {
+/*        old way of observing data without flow
+//        viewModel.contacts.observe(this.viewLifecycleOwner, Observer {
+//            binding.rvContacts.layoutManager = LinearLayoutManager(this.context)
+//            binding.rvContacts.adapter = it?.let { contacts ->
+//                MyAdapter(convertContactsIntoViewType(
+//                    filterBy(field, filter, contacts)), listener) }
+//        }) */
+        viewModel.contactsFlow.observe(this.viewLifecycleOwner, Observer {
             binding.rvContacts.layoutManager = LinearLayoutManager(this.context)
             binding.rvContacts.adapter = it?.let { contacts ->
                 MyAdapter(convertContactsIntoViewType(

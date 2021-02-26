@@ -11,40 +11,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
 object ContactsRepo {
-    suspend fun getContacts(context: Context) : List<Contact>? {
-        val contactsDao = ContactsDatabase.getDatabase(context)?.contactsDao()
-        return contactsDao?.getAllContacts()
-    }
+    /* old way of getting contacts without flow
+//    suspend fun getContacts(context: Context) : List<Contact>? {
+//        val contactsDao = ContactsDatabase.getDatabase(context).contactsDao()
+//        return contactsDao.getAllContacts()
+//    } */
+
+    fun getContactsFlow(context: Context) = ContactsDatabase.getDatabase(context)
+        .contactsDao().getAllContactsFlow()
 
     fun saveContact(context: Context, contact: Contact) {
-        val contactsDao = ContactsDatabase.getDatabase(context)?.contactsDao()
-        contactsDao?.setContact(contact)
+        val contactsDao = ContactsDatabase.getDatabase(context).contactsDao()
+        contactsDao.setContact(contact)
     }
 
     suspend fun updateContact(context: Context, contact: Contact) {
-        val contactsDao = ContactsDatabase.getDatabase(context)?.contactsDao()
-        contactsDao?.updateContact(contact)
+        val contactsDao = ContactsDatabase.getDatabase(context).contactsDao()
+        contactsDao.updateContact(contact)
     }
-//    suspend fun getContactsFlow(context: Context) : Flow<List<Contact>>? {
-//        val contactsDao = ContactsDatabase.getDatabase(context)?.contactsDao()
-//        return contactsDao?.getAllContactsFlow()
-//    }
-//    suspend fun observerContacts() {
-//        context?.let { context ->
-//            ContactsRepo.getContactsFlow(context)?.collect { contactsFlow ->
-//                if(contactsFlow.isNotEmpty()) {
-//                    val listener: ContactClickListener = object : ContactClickListener {
-//                        override fun itemClicked(contact: Contact) {
-//                            val action = ContactsFragmentDirections.actionContactsFragmentToDetailContactFragment(contact)
-//                            findNavController().navigate(action)
-//                        }
-//                    }
-//                    viewModel.contacts.observe(this.viewLifecycleOwner, Observer {
-//                        binding.rvContacts.layoutManager = LinearLayoutManager(this.context)
-//                        binding.rvContacts.adapter = it?.let { contacts -> ContactAdapter(contacts, listener) }
-//                    })
-//                }
-//            }
-//        }
-//    }
 }

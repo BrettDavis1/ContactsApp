@@ -17,8 +17,8 @@ interface ContactsDao {
     @Query("SELECT * FROM contacts ORDER BY fName ASC")
     suspend fun getAllContacts(): List<Contact>
 
-//    @Query("SELECT * FROM contacts ORDER BY fName ASC")
-//    suspend fun getAllContactsFlow(): Flow<List<Contact>>
+    @Query("SELECT * FROM contacts ORDER BY fName ASC")
+    fun getAllContactsFlow(): Flow<List<Contact>>
 
     @get:Query("SELECT * FROM contacts ORDER BY fName ASC")
     val contacts: LiveData<List<Contact>>
